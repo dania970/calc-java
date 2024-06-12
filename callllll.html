@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>you can do it</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000000;
+        }
+
+        .products,
+        .cart {
+            display: flex;
+            margin: 40px;
+        }
+
+        .product,
+        .cart-item {
+            border: 1px solid #000000;
+            padding: 40px 60px 40px 50px;
+            margin: 50px;
+            text-align: center;
+            background-color: aliceblue;
+
+        }
+
+        .product img,
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 10px 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5b7796;
+        }
+
+        .cart-item {
+            display: none;
+            align-items: center;
+        }
+
+        .cart-item span {
+            margin: 5px 10px;
+        }
+
+        .total {
+            margin-top: 70px;
+            font-size: 20px;
+        }
+
+        .total button {
+            padding: 10px 40px;
+        }
+    </style>
+    <div class="products">
+        <div class="product">
+            <img src="https://i.pinimg.com/564x/1d/a7/7a/1da77a25e2147c6b908ccdfe84012bbb.jpg" alt="iPhone 13 Pro">
+            <p>iphone 13 pro</p>
+            <p>900jd</p>
+            <button onclick="addToCart('iphone-13-pro', 900)">add to cart</button>
+        </div>
+        <div class="product">
+            <img src="https://i.pinimg.com/564x/36/41/5d/36415d1b12c6976a037b6dd82474fb1e.jpg" alt="Headset">
+            <p>headset</p>
+            <p>150jd</p>
+            <button onclick="addToCart('headset', 150)">add to cart</button>
+        </div>
+        <div class="product">
+            <img src="https://i.pinimg.com/564x/cc/99/5d/cc995d76a72c817a3b575513d19598c9.jpg" alt="Keyboard">
+            <p>keyboard</p>
+            <p>60jd</p>
+            <button onclick="addToCart('keyboard', 60)">add to cart</button>
+        </div>
+    </div>
+    <div class="cart">
+        <div class="cart-item" id="cart-item-iphone-13-pro">
+            <img src="https://i.pinimg.com/564x/1d/a7/7a/1da77a25e2147c6b908ccdfe84012bbb.jpg" alt="iPhone 13 Pro">
+            <button onclick="decreaseQuantity('iphone-13-pro')">-</button>
+            <span id="quantity-iphone-13-pro">0</span>
+            <button onclick="increaseQuantity('iphone-13-pro')">+</button>
+            <p id="total-iphone-13-pro">0jd</p>
+            <button onclick="removeFromCart('iphone-13-pro')">✕</button>
+        </div>
+        <div class="cart-item" id="cart-item-headset">
+            <img src="https://i.pinimg.com/564x/36/41/5d/36415d1b12c6976a037b6dd82474fb1e.jpg" alt="Headset">
+            <button onclick="decreaseQuantity('headset')">-</button>
+            <span id="quantity-headset">0</span>
+            <button onclick="increaseQuantity('headset')">+</button>
+            <p id="total-headset">0jd</p>
+            <button onclick="removeFromCart('headset')">✕</button>
+        </div>
+        <div class="cart-item" id="cart-item-keyboard">
+            <img src="https://i.pinimg.com/564x/cc/99/5d/cc995d76a72c817a3b575513d19598c9.jpg" alt="Keyboard">
+            <button onclick="decreaseQuantity('keyboard')">-</button>
+            <span id="quantity-keyboard">0</span>
+            <button onclick="increaseQuantity('keyboard')">+</button>
+            <p id="total-keyboard">0jd</p>
+            <button onclick="removeFromCart('keyboard')">✕</button>
+
+        </div>
+        <div class="total">
+            <p>total <span id="total-price">0</span>jd</p>
+            <button>save</button>
+        </div>
+    </div>
+    <script>
+        let cart = {
+            'iphone-13-pro': { price: 900, quantity: 0 },
+            'headset': { price: 150, quantity: 0 },
+            'keyboard': { price: 60, quantity: 0 }
+        };
+
+        function addToCart(product, price) {
+            if (cart[product].quantity === 0) {
+                document.getElementById(`cart-item-${product}`).style.display = 'flex';
+            }
+            cart[product].quantity++;
+            updateCart(product);
+        }
+
+        function removeFromCart(product) {
+            cart[product].quantity = 0;
+            document.getElementById(`cart-item-${product}`).style.display = 'none';
+            updateCart(product);
+        }
+
+        function increaseQuantity(product) {
+            cart[product].quantity++;
+            updateCart(product);
+        }
+
+        function decreaseQuantity(product) {
+            if (cart[product].quantity > 0) {
+                cart[product].quantity--;
+                updateCart(product);
+            }
+            if (cart[product].quantity === 0) {
+                removeFromCart(product);
+            }
+        }
+
+        function updateCart(product) {
+            document.getElementById(`quantity-${product}`).innerText = cart[product].quantity;
+            document.getElementById(`total-${product}`).innerText = cart[product].quantity * cart[product].price + 'jd';
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            let total = 0;
+            for (const product in cart) {
+                total += cart[product].price * cart[product].quantity;
+            }
+            document.getElementById('total-price').innerText = total;
+        }
+
+    </script>
+</body>
+
+</html>
